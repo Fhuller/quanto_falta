@@ -1,33 +1,23 @@
 const router = require("express").Router();
-const Entrie = require("../models/certificateEntries");
-
-//GET ALL
-router.get("/", (req, res) => {
-  User.find()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((e) => {
-      res.status(500).send({ message: e.message });
-    });
-});
-
-//GET SINGLE
-router.get("/:id", (req, res) => {
-  User.findById(req.params.id)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((e) => {
-      res.status(500).send({ message: "Usuario não encontrado" });
-    });
-});
+const certificateEntrie = require("../models/certificateEntries");
+const upload = require("../middleware/upload.js")
 
 //CREATE
-router.post("/", (req, res) => {
+router.post("/", upload.single("file"), (req, res) => {
   data = req.body;
 
-  User.insertMany(data)
+  let certificate = new certificateEntrie({
+    name: data.name,
+    description: data.description,
+    date: Date.now(),
+  });
+
+  if (req.file) {
+    certificate.file = req.file.path;
+  }
+
+  certificate
+    .save()
     .then((data) => {
       res.send(data);
     })
@@ -36,37 +26,4 @@ router.post("/", (req, res) => {
     });
 });
 
-//UPDATE
-router.put("/:id", (req, res) => {
-  const id = req.params.id;
-
-  User.findByIdAndUpdate(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({ message: "Usuario não encontrado" });
-      } else {
-        res.send({ message: "Usuario atualizado com sucesso" });
-      }
-    })
-    .catch((e) => {
-      res.status(500).send({ message: "Erro ao atualizar: " + e.message });
-    });
-});
-
-//DELETE
-router.delete("/:id", (req, res) => {
-  const id = req.params.id;
-
-  user
-    .findByIdAndDelete(id, req.body)
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({ message: "Usuario não encontrado" });
-      } else {
-        res.send({ message: "Usuario excluido com sucesso" });
-      }
-    })
-    .catch((e) => {
-      res.status(500).send({ message: "Erro ao excluir: " + e.message });
-    });
-});
+module.exports = router;

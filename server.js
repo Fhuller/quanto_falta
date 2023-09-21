@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const userRoutes = require("./routes/user");
+const certificateRoutes = require("./routes/certificateEntrie");
 const swaggerUI = require("swagger-ui-express");
 const yaml = require("yamljs");
 const swaggerDefinition = yaml.load("./swagger.yaml");
@@ -44,5 +45,6 @@ module.exports = app;
 //#region Routes
 
 app.use("/api/users", userRoutes);
+app.use("/api/certificate", certificateRoutes);
 
 //#endregion
