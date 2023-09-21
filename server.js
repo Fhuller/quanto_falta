@@ -1,19 +1,19 @@
+//#region Const Definition
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
-
 const userRoutes = require("./routes/user");
-
 const swaggerUI = require("swagger-ui-express");
 const yaml = require("yamljs");
-
 const swaggerDefinition = yaml.load("./swagger.yaml");
-app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
-
+const PORT = process.env.PORT || 4000;
 require("dotenv-flow").config();
 
-app.use(bodyParser.json());
+//#endregion
+
+//#region Conexão ao mongoDB
 
 mongoose
   .connect(process.env.DBHOST, {
@@ -26,15 +26,23 @@ mongoose.connection.once("open", () =>
   console.log("Conectado ao banco no MongoDB")
 );
 
-//route
-app.get("/api/hello", (req, res) => {
-  res.status(200).send({ message: "Hello World!" });
-});
-app.use("/api/users", userRoutes);
+//#endregion
 
-const PORT = process.env.PORT || 4000;
+//#region AppConfig
+
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
+app.use(bodyParser.json());
+
 app.listen(PORT, function () {
   console.log("Server rodando na porta " + PORT);
 });
 
 module.exports = app;
+
+//#endregion
+
+//#region Routes
+
+app.use("/api/users", userRoutes);
+
+//#endregion

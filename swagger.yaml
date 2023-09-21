@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: quanto_falta
-  description: api com mongodb
-  version: 1.0.0
+  title: Quanto Falta
+  description: API do aplicativo Quanto Falta feita em Node.Js utilizando MongoDB
+  version: 1.0.1
 servers:
   - url: http://localhost:4000/api/
-    description: Localhost development server 
-  - url: https://smsj-men-restapi.herokuapp.com/api/
-    description: Heroku remote server
+    description: Desenvolvimento local
+  - url: https://quanto-falta.onrender.com/api/
+    description: Servidor em Nuvem RENDER
 components:
   securitySchemes:
     ApiKeyAuth:        # arbitrary name for the security scheme
@@ -30,10 +30,10 @@ components:
 
 paths:
 
-  /user/register:
+  /users/register:
     post:
-      summary: Register a new User
-      description: Register a new User in the database
+      summary: Registro de novo usuário
+      description: Registro de novo usuário
       requestBody:
         required: true
         content:
@@ -43,7 +43,7 @@ paths:
 
       responses:
         201:
-          description: User created succesfully
+          description: Usuário criado com sucesso
           content:
             application/json:
               schema:
@@ -54,10 +54,10 @@ paths:
                   _id:
                     type: string
 
-  /user/login:
+  /users/login:
     post:
-      summary: Login a User
-      description: Login a User in order to get JWT token (auth-token)
+      summary: Login de Usuário
+      description: Login para pegar o JWT (Token de autenticação e acesso ao aplicativo)
       requestBody:
         required: true
         content:
@@ -67,12 +67,12 @@ paths:
               properties:
                 email:
                   type: string
-                password:
+                pwd:
                   type: string
       
       responses:
         200:
-          description: User logged in succesfully
+          description: Usuário Logado com Sucesso
           content:
             application/json:
               schema:
