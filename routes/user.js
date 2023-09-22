@@ -4,15 +4,6 @@ const router = require("express").Router();
 const User = require("../models/user");
 const { registerValidation, loginValidation } = require("../validation");
 
-/**
- * @openai
- * '/register':
- *  post:
- *    tag:
- *       - Registro
- *        Operação de registro de usuario 
- * 
- */
 router.post("/register", async (req, res) => {
   const { error } = registerValidation(req.body);
 
@@ -79,6 +70,27 @@ router.post("/login", async (req, res) => {
   });
 });
 
+//GET ALL
+router.get("/", (req, res) => {
+  User.find()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((e) => {
+      res.status(500).send({ message: e.message });
+    });
+});
+
+//GET SINGLE
+router.get("/:id", (req, res) => {
+  User.findById(req.params.id)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((e) => {
+      res.status(500).send({ message: "Usuario não encontrado" });
+    });
+});
 
 //UPDATE
 router.put("/:id", (req, res) => {

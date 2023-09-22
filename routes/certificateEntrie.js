@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const certificateEntrie = require("../models/certificateEntries");
-const upload = require("../middleware/upload.js")
+const upload = require("../middleware/upload.js");
+const path = require("path");
+const {verifyToken} = require("../validation")
 
 //CREATE
-router.post("/", upload.single("file"), (req, res) => {
+router.post("/upload", verifyToken, upload.single("file"), (req, res) => {
   data = req.body;
 
   let certificate = new certificateEntrie({
@@ -23,6 +25,57 @@ router.post("/", upload.single("file"), (req, res) => {
     })
     .catch((e) => {
       res.status(500).send({ message: e.message });
+    });
+});
+
+//GET SINGLE
+router.get("/:filename", verifyToken, (req, res) => {
+  const { filename } = req.params;
+  const filePath = path.join(process.cwd() + '/uploads', filename);
+
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+  res.sendFile(filePath, (e) => {
+    if (e) {
+      res.status(404).send("Arquivo não encontrado");
+    }
+  });
+});
+
+//UPDATE
+router.put("/:id", (req, res) => {
+  const id = req.params.id;
+
+  certificateEntrie
+    .findByIdAndUpdate(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({ message: "Certificado não encontrado" });
+      } else {
+        res.send({ message: "Certificado atualizado com sucesso" });
+      }
+    })
+    .catch((e) => {
+      res.status(500).send({ message: "Erro ao atualizar: " + e.message });
+    });
+});
+
+//DELETE
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+
+  certificateEntrie
+    .findByIdAndDelete(id, req.body)
+    .then((data) => {
+      if (!data) {
+        res.status(404).send({ message: "Certificado não encontrado" });
+      } else {
+        res.send({ message: "Certificado excluido com sucesso" });
+      }
+    })
+    .catch((e) => {
+      res.status(500).send({ message: "Erro ao excluir: " + e.message });
     });
 });
 

@@ -8,11 +8,13 @@ servers:
     description: Desenvolvimento local
   - url: https://quanto-falta.onrender.com/api/
     description: Servidor em Nuvem RENDER
+security:
+  - JWT: []
 components:
   securitySchemes:
-    ApiKeyAuth:        # arbitrary name for the security scheme
+    JWT:
       type: apiKey
-      in: header       # can be "header", "query" or "cookie"
+      in: header
       name: auth-token
 
   schemas:   
@@ -28,6 +30,20 @@ components:
         date:
           type: string
 
+    Certificate:
+      type: object
+      properties: 
+        name:
+          type: string
+        description:
+          type: string
+        file:
+          type: string
+        date:
+          type: string
+        validated:
+          type: boolean
+
 paths:
 
   /users/register:
@@ -40,6 +56,8 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/User"
+      tags: 
+        - User
 
       responses:
         201:
@@ -69,7 +87,9 @@ paths:
                   type: string
                 pwd:
                   type: string
-      
+      tags: 
+        - User
+
       responses:
         200:
           description: Usuário Logado com Sucesso
@@ -82,3 +102,199 @@ paths:
                     type: string
                   data:
                     type: string
+
+  /users/:
+    get:
+      summary: Ler todos os usuários
+      description: Ler todos os usuários
+      tags: 
+        - User
+
+      responses:
+        200:
+          description: Json com todos usuários
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      summary: Ler usuário específico
+      description: Recebe um usuário de acordo com o id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      tags: 
+        - User
+
+      responses:
+        200:
+          description: Json com um usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+    put:
+      summary: Atualiza usuário
+      description: Atualiza os dados de um usuário específico a partir do id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      tags: 
+        - User
+
+      responses:
+        200:
+          description: Sucesso ao atualizar usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+    delete:
+      summary: Exclui usuário
+      description: Exclui os dados de um usuário especifico a partir do id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      tags: 
+        - User
+
+      responses:
+        200:
+          description: Sucesso ao excluir usuário
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /certificate/upload:
+    post:
+      summary: Upload de certificado
+      description: Upload de certificado para validação
+      consumes: 
+        - multipart/form-data
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: 
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                description:
+                  type: string  
+          
+      tags: 
+        - Certificate
+
+      responses:
+        200:
+          description: Certificado enviado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  data:
+                    type: string
+
+  /certificate/{filename}:
+    get:
+      summary: Download de certificado
+      description: Download de certificado para validação
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          description: O nome do arquivo para download (com extensão)
+          schema:
+            type: string
+      tags: 
+        - Certificate
+
+      responses:
+        200:
+          description: OK. O arquivo foi baixado com sucesso
+          content:
+            application/pdf:
+              schema:
+                type: file
+      produces:
+        - application/pdf
+        - charset=utf-8
+
+  /certificate/{id}:
+    put:
+      summary: Atualiza Certificado
+      description: Atualiza os dados de um certificado específico a partir do id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Certificate"
+      tags: 
+        - Certificate
+
+      responses:
+        200:
+          description: Sucesso ao atualizar Certificado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Certificate"
+
+    delete:
+      summary: Exclui Certificado
+      description: Exclui os dados de um Certificado especifico a partir do id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      tags: 
+        - Certificate
+
+      responses:
+        200:
+          description: Sucesso ao excluir Certificado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Certificate"
