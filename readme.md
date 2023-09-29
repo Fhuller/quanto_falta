@@ -17,9 +17,9 @@ https://quanto-falta.onrender.com/api/docs/#/
 
 Para começar a desenvolver o projeto será necessário criar um arquivo .env com as configurações seguindo o exemplo em .env_mock e então rodar:
 
-´´´
+```
 npm install
 npm run dev
-´´´
+```
 
 E pronto! O projeto está pronto para o desenvolvimento!
