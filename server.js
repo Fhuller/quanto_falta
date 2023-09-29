@@ -35,7 +35,13 @@ app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDefinition));
 app.use(bodyParser.json());
 
 app.listen(PORT, function () {
-  console.log("Server rodando na porta " + PORT);
+  console.log(
+    "Server rodando na porta " +
+      PORT +
+      ": http://localhost:" +
+      PORT +
+      "/api/docs/#/"
+  );
 });
 
 module.exports = app;
