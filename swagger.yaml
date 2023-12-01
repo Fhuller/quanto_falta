@@ -29,6 +29,10 @@ components:
           type: string
         date:
           type: string
+        nameCurso:
+          type: string
+        cargaHoraria:
+          type: string
 
     Certificate:
       type: object
