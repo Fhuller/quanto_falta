@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken");
 
 const registerValidation = (data) => {
   const schema = joi.object({
-    name: joi.string().min(6).max(255).required(),
-    email: joi.string().min(6).max(255).required(),
-    pwd: joi.string().min(6).max(255).required(),
-    nameCurso: joi.string().min(6).max(255).required(),
+    name: joi.string().max(255).required(),
+    email: joi.string().max(255).required(),
+    pwd: joi.string().max(255).required(),
+    nameCurso: joi.string().max(255).required(),
     cargaHoraria: joi.number(),
   });
   return schema.validate(data);
@@ -14,8 +14,8 @@ const registerValidation = (data) => {
 
 const loginValidation = (data) => {
   const schema = joi.object({
-    email: joi.string().min(6).max(255).required(),
-    pwd: joi.string().min(6).max(255).required(),
+    email: joi.string().max(255).required(),
+    pwd: joi.string().max(255).required(),
   });
   return schema.validate(data);
 };
