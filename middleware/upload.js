@@ -18,11 +18,7 @@ var upload = multer({
     fileSize: 1024 * 1024 * 2,
   },
   fileFilter: function (req, file, callback) {
-    if (file.mimetype == "application/pdf") {
-      callback(null, true);
-    } else {
-      console.log("Somente arquivos do tipo PDF são suportados");
-    }
+    callback(null, true);
   },
 });
 
