@@ -11,6 +11,7 @@ router.post("/upload", verifyToken, upload.single("file"), (req, res) => {
   let certificate = new certificateEntrie({
     name: data.name,
     description: data.description,
+    email: data.email,
     date: Date.now(),
   });
 

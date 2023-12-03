@@ -212,6 +212,8 @@ paths:
                   type: string
                 description:
                   type: string  
+                email:
+                 type: string
           
       tags: 
         - Certificate
