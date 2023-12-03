@@ -250,12 +250,8 @@ paths:
       responses:
         200:
           description: OK. O arquivo foi baixado com sucesso
-          content:
-            application/pdf:
-              schema:
-                type: file
+          
       produces:
-        - application/pdf
         - charset=utf-8
 
   /certificate/{id}:

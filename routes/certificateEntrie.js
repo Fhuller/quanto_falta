@@ -34,7 +34,6 @@ router.get("/:filename", verifyToken, (req, res) => {
   const { filename } = req.params;
   const filePath = path.join(process.cwd() + '/uploads', filename);
 
-  res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
   res.sendFile(filePath, (e) => {
