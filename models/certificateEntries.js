@@ -7,7 +7,7 @@ let certificateEntrieSchema = new Schema({
   description: { type: String, required: true, max: 255 },
   file: { type: String, required: true, max: 255 },
   date: { type: Date, default: Date.Now },
-  email: { type: String, required: true, max: 255 },
+  email: { type: String, max: 255 },
   validated: { type: Boolean, default: false }
 });
 
