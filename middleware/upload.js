@@ -17,9 +17,6 @@ var upload = multer({
     fieldNameSize: 300,
     fileSize: 1024 * 1024 * 2,
   },
-  fileFilter: function (req, file, callback) {
-    callback(null, true);
-  },
 });
 
 module.exports = upload;
