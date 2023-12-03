@@ -44,6 +44,18 @@ router.get("/:filename", verifyToken, (req, res) => {
   });
 });
 
+
+router.get("/getAll/:status", verifyToken, async (req, res) => {
+  const { status } = req.params;
+
+  var certificados = await certificateEntrie.find({ validated: status })
+
+  res.json({
+    certificados: certificados
+  });
+
+});
+
 //UPDATE
 router.put("/:id", (req, res) => {
   const id = req.params.id;
