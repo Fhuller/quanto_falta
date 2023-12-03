@@ -33,6 +33,8 @@ components:
           type: string
         cargaHoraria:
           type: string
+        admin:
+          type: boolean
 
     Certificate:
       type: object

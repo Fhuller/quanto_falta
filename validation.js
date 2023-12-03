@@ -8,6 +8,7 @@ const registerValidation = (data) => {
     pwd: joi.string().max(255).required(),
     nameCurso: joi.string().max(255).required(),
     cargaHoraria: joi.number(),
+    admin: joi.bool()
   });
   return schema.validate(data);
 };

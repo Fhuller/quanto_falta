@@ -8,6 +8,7 @@ let userSchema = new Schema({
   pwd: { type: String, required: true, max: 255 },
   nameCurso: { type: String, required: true, max: 255 },
   cargaHoraria: {type: Number, required: true}, 
+  admin: {type: Boolean, default: false},
   date: { type: Date, default: Date.Now },
 });
 
