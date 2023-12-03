@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = require("express").Router();
 const User = require("../models/user");
+const certificateEntrie = require("../models/certificateEntries");
 const { registerValidation, loginValidation } = require("../validation");
 
 router.post("/register", async (req, res) => {
@@ -66,10 +67,21 @@ router.post("/login", async (req, res) => {
     { expiresIn: process.env.JWT_EXPIRES_IN }
   );
 
+  var certificatesTotalTime = 0;
+
+  var teste = await certificateEntrie.find({ email: req.body.email, validated: true });
+
+  teste.forEach(certificate => {
+    certificatesTotalTime += parseInt(certificate.description) 
+  });
+
+  
   res.header("auth-token", token).json({
     error: null,
     data: { token },
-    admin: user.admin ?? false
+    admin: user.admin ?? false,
+    cargaHoraria: user.cargaHoraria ?? 0,
+    validatedTime: certificatesTotalTime ?? 0
   });
 });
 
